@@ -1,0 +1,57 @@
+//
+//  ViewController.swift
+//  BPM v3
+//
+//  Created by Kelly Huang on 11/12/16.
+//  Copyright © 2016 Kelly Huang. All rights reserved.
+//
+
+import UIKit
+
+class ViewController: UIViewController {
+    //MARK: Properties
+    
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var numberBPM: UITextField!
+    @IBOutlet weak var BPMLabel: UILabel!
+    var timer = 0
+    //timer
+    var time = 0
+    var timertime = Timer()
+    var boo = 0
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    //MARK: Actions
+    
+    @IBAction func BPMTaps(_ sender: UIButton) {
+        BPMLabel.text = "Ready for Beat"
+        timertime = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(ViewController.action), userInfo: nil, repeats: true)
+        boo += 1
+        time = 0
+        print(time)
+    }
+    
+    func action()
+    {
+        if(boo % 2 == 0){
+            time += 1
+            timeLabel.text = String(time)
+            print(boo)
+        }
+        else{
+            timeLabel.text = String(time)
+            time+=1
+            print(boo)
+        }
+    }
+
+}
+
