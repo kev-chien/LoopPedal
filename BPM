@@ -41,16 +41,9 @@ class ViewController: UIViewController {
     
     func action()
     {
-        if(boo % 2 == 0){
-            time += 1
-            timeLabel.text = String(time)
-            print(boo)
-        }
-        else{
             timeLabel.text = String(time)
             time+=1
             print(boo)
-        }
     }
 
 }
