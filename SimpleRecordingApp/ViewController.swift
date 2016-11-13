@@ -1,9 +1,10 @@
+
 //
 //  ViewController.swift
 //  SimpleRecordingApp
 //
-//  Created by Maggie Luo on 11/12/16.
-//  Copyright © 2016 Maggie Luo. All rights reserved.
+//  Created by Loop Pedal on 11/12/16.
+//  Copyright © 2016 Loop Pedal. All rights reserved.
 //
 
 import UIKit
@@ -11,12 +12,37 @@ import AVFoundation
 
 class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
     
+    //audio player and recorder
     var audioPlayer: AVAudioPlayer?
     var audioRecorder: AVAudioRecorder?
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var stopButton: UIButton!
+    @IBOutlet weak var metronomeLabel: UILabel!
+    //@IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var bpmTapOutlet: UIButton!
     var first_recording = true
+    
+    
+    //timer
+    var time = 0
+    var timetimer = Timer()
+    var metronomeTimer = Timer()
+    var metronomeTime = 0
+    var metronomeActivated = 0
+    var count = 0
+    
+    //save BPM
+    var saveBPM1 = 0
+    var saveBPM2 = 0
+    var saveBPM3 = 0
+    var averageBPM = 0
+    var actualBPM = 0
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,10 +80,6 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
     @IBAction func recordAudio(_ sender: UIButton?) {
         if audioRecorder?.isRecording == false {
@@ -67,6 +89,46 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         }
     }
 
+    @IBAction func bpmTap(_ sender: Any) {
+        timetimer.invalidate()
+        timetimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(ViewController.action), userInfo: nil, repeats: true)
+        count += 1
+        print(count)
+        
+        if(count==4){
+            saveBPM3 = time
+            print("4", time)
+            timetimer.invalidate()
+            time = 0
+            //timerLabel.text = ("Done")
+            averageBPM = (saveBPM1+saveBPM2+saveBPM3)/3
+            count = 0
+            //AverageBPMLabel.text = "Play Beat"
+            print("av", averageBPM)
+            actualBPM = 6000 / averageBPM
+            metronomeLabel.text = "Metronome: \(actualBPM) bpm"
+            bpmTapOutlet.setTitle("Tap to reset", for: UIControlState.normal)
+            
+            //activate metronome
+            if metronomeActivated == 0{
+                metronomeActivated = 1
+            }
+        }
+        if(count==1){
+            bpmTapOutlet.setTitle("Beat 2", for: UIControlState.normal)
+        }
+        if(count==2){
+            saveBPM1 = time
+            print("2", time)
+            bpmTapOutlet.setTitle("Beat 3", for: UIControlState.normal)
+        }
+        if(count==3){
+            saveBPM2 = time
+            print("3", time)
+            bpmTapOutlet.setTitle("Beat 4", for: UIControlState.normal)
+        }
+        time = 0
+    }
     
     @IBAction func stopAudio(_ sender: UIButton?) {
         stopButton.isEnabled = false
@@ -98,5 +160,14 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
             }
         }
     }
+    
+    
+    func action()
+    {
+        time+=1
+        //timerLabel.text = String(time)
+        
+    }
+
 }
 
