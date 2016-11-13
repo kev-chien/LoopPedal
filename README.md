@@ -1,3 +1,8 @@
+#Features
+Switch to branch maggie to find main loop recording app features.
+Swtich to branch Kelly to find bpm tap interface.
+Switch to Lawrence's branch to find arduino code for loop pedal.
+
 #Development quickstart
 `git clone https://github.com/kev-chien/LoopPedal.git`
 `cd LoopPedal`
